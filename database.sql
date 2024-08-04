@@ -1,3 +1,5 @@
+SELECT * FROM category;
+
 /*INSERT INTO products (
     title,
     description,
@@ -32,10 +34,4 @@
     price INT,
     category_name VARCHAR(255),
     FOREIGN KEY (category_name) REFERENCES category (name)
-); */
-
-/*INSERT INTO category (
-    name
-) VALUES (
-    'iphone'
 ); */

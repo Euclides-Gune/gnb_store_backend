@@ -17,20 +17,23 @@ router.post('/add/product', upload.single('thumbnail'), async (req, res) => {
     }
 });
 
+router.get('/', async (req, res) => {
+    try {
+        const products = await pool.query("SELECT * FROM products;");
+        res.status(200).json(products.rows);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}); 
+
 router.delete('/delete/product/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const response = await pool.query("DELETE FROM products WHERE id = $1", [id]);
-        res.status(200).json(response);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
-
-router.get('/categories', async (req, res) => {
-    try {
-        const categories = await pool.query("SELECT * FROM category;");
-        res.status(200).json(categories.rows);
+        if(response.rowCount == 1) 
+            res.status(200).json({messsage: "product deleted successfully"});
+        else
+            res.status(500).json({message: "Product not found"});
     } catch (error) {
         res.status(500).json(error);
     }
@@ -44,15 +47,6 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-});
-
-router.get('/', async (req, res) => {
-    try {
-        const products = await pool.query("SELECT * FROM products;");
-        res.status(200).json(products.rows);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
+}); 
 
 module.exports = router;
